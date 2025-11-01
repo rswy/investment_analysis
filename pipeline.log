@@ -1,0 +1,61 @@
+2025-11-01 11:45:46,623 - InvestmentPipeline - INFO - --BEGIN INVESTMENT ANALYSIS PIPELINE--
+2025-11-01 11:45:46,623 - InvestmentPipeline - INFO - 
+
+
+Step 1: Setup Database Connection
+
+
+2025-11-01 11:45:46,626 - InvestmentPipeline - INFO - 
+
+
+Step 2: Ingest Master Reference Data.
+
+c
+2025-11-01 11:45:46,626 - InvestmentPipeline - INFO - DataIngestor initialized.
+2025-11-01 11:45:46,721 - InvestmentPipeline - INFO - Successfully executed SQL script: sql/master-reference-sql.sql
+2025-11-01 11:45:46,722 - InvestmentPipeline - INFO - Master Reference Data Ingested.
+2025-11-01 11:45:46,722 - InvestmentPipeline - INFO - 
+
+
+Step 3. Preprocess Fund Data.
+
+
+2025-11-01 11:45:46,722 - InvestmentPipeline - INFO - DataValidator initialized.
+2025-11-01 11:45:46,723 - InvestmentPipeline - INFO - Successfully executed SQL script: sql/create_fund_position_table.sql
+2025-11-01 11:45:47,067 - InvestmentPipeline - INFO - Total preprocessed fund data shape: (10309, 11)
+2025-11-01 11:45:47,067 - InvestmentPipeline - INFO - 
+
+
+Step 4: Ingest processed Fund Data.
+
+
+2025-11-01 11:45:47,067 - InvestmentPipeline - INFO - DataIngestor initialized.
+2025-11-01 11:45:47,092 - InvestmentPipeline - INFO - Successfully inserted 10309 rows into 'fund_positions'.
+2025-11-01 11:45:47,092 - InvestmentPipeline - INFO - 
+
+
+Step 5: Perform Price Reconciliation.
+
+
+2025-11-01 11:45:47,092 - InvestmentPipeline - INFO - PriceReconciler initialized.
+2025-11-01 11:45:47,259 - InvestmentPipeline - WARNING - 1300 positions have no master price (either exact or last available)
+2025-11-01 11:45:47,260 - InvestmentPipeline - INFO - 
+Price difference statistics:
+total_positions         22633.000000
+positions_with_diffs     1641.000000
+max_diff                  423.775000
+mean_diff                   1.343715
+dtype: float64
+2025-11-01 11:45:47,261 - InvestmentPipeline - INFO - Total positions processed: 22633
+2025-11-01 11:45:47,261 - InvestmentPipeline - INFO - Positions with price differences: 1641
+2025-11-01 11:45:47,314 - InvestmentPipeline - INFO - 
+
+
+Step 6: Perform Performance Attribution (Rate of Return Calculation).
+
+
+2025-11-01 11:45:47,314 - InvestmentPipeline - INFO - PerformanceCalculator initialized.
+2025-11-01 11:45:47,321 - InvestmentPipeline - INFO - Performance attribution completed.
+2025-11-01 11:45:47,321 - InvestmentPipeline - INFO - Best performing funds report saved to output/best_performing_funds.csv
+2025-11-01 11:45:47,322 - InvestmentPipeline - INFO - Database connection closed after master data ingestion.
+2025-11-01 11:45:47,322 - InvestmentPipeline - INFO - --- Pipeline Completed Successfully ---

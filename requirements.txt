@@ -1,0 +1,7 @@
+pandas
+configparser
+python-dateutil
+pytest
+matplotlib
+seaborn
+numpy
